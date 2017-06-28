@@ -6,7 +6,7 @@ int b;
 while (a+5) {
   n = 8+c*9;
   if(a+b){
-      int k;
+      int k, abb;
   }
   else{
   k = 0;
