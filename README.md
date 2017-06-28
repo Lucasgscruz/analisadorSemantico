@@ -3,8 +3,8 @@ Projeto apresentado ao curso de Ciência da Computação, da
 Universidade Federal de São João del Rei, como requisito parcial
 para obtenção da nota final da disciplina de Compiladores.
 
-Este projeto consiste na implementação do analisador sintático de
-um compilador para a linguagem "C".
+Este projeto consiste na implementação do analisador semântico e
+gerador de código  Assembly de um compilador para a linguagem "C".
 
 ## Execução
 Para executar o compilador, basta inserir na pasta "entrada" o arquivo com
@@ -18,10 +18,12 @@ caso queira executar o arquivo padrão "helloWorld.c" basta digitar o comando:
         make
 
 ## Saída
-Como saída o compilador retorna uma mensagem informando se as análises léxica
-e sintática foram executadas com êxito, ou se houve algum erro durante a
-semi-compilação. Caso algum erro tenha sido detectado, o mesmo é exibido
+Como saída o compilador retorna uma mensagem informando se as análises léxica,
+sintática e semântica foram executadas com êxito, ou se houve algum erro durante a
+compilação. Caso algum erro tenha sido detectado, o mesmo é exibido
 na tela do terminal juntamente com sua respectiva localização no código-fote(linha/coluna).
+Após a compilação, na pasta raiz é criado um arquvio "executavel" contendo o código Assembly
+que foi gerado a partir do código-fonte.
 
 ### Desenvolvido por:
 ![](https://github.com/Lucasgscruz.png?size=100)
