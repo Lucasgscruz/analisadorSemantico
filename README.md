@@ -1,4 +1,4 @@
-# Analisador Sintático
+# Analisador Semântcio/ Gerador de Código
 Projeto apresentado ao curso de Ciência da Computação, da
 Universidade Federal de São João del Rei, como requisito parcial
 para obtenção da nota final da disciplina de Compiladores.
