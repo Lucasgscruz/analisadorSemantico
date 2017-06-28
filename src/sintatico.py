@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 from erros import *
+from dicionario import *
 import sys
 import re
 
 if __name__ != '__main__':
 	i = 0
 	tabelaDec = {}
+	exp = []
 
 	def E(tokens):
 		T(tokens)
@@ -19,8 +21,15 @@ if __name__ != '__main__':
 
 	def F(tokens):
 		global i
-		if(re.match(r'^[a-zA-z0-9_]', tokens[i][0]) or
-		   re.match(r'^[-0-9.]+$', tokens[i][0])):   # Terminal
+		if(re.match(r'^[-0-9]+$', tokens[i][0])):   # Terminal, numero inteiro
+			exp.append('int')
+			i += 1
+		elif(re.match(r'^[-0-9.]+$', tokens[i][0])):   # Terminal, numero real
+			exp.append('float')
+			i += 1
+		elif(re.match(r'^[a-zA-z0-9_]', tokens[i][0]) or
+		  	re.match(r'^[-0-9.]+$', tokens[i][0])):   # Terminal identificador
+			exp.append(tokens[i][0])
 			i += 1
 		elif(tokens[i][0] == '('):  # Terminal
 			i += 1
@@ -73,6 +82,7 @@ if __name__ != '__main__':
 		Realiza verificação da validade de expressões aritmeticas.
 		"""
 		E(tokens)
+		verificaExp(tokens, exp)
 		return 1
 
 	def valor(tokens):
@@ -103,7 +113,7 @@ if __name__ != '__main__':
 		global i
 		i += 1
 		if(re.match(r'^[a-zA-z0-9_]+$', tokens[i][0])):  # <ID>
-			adicionaTabela(tokens, i, tokens[i-1][0])
+			adicionaTabela(tokens, i, tipo)
 			i += 1
 			if(tokens[i][0] == ';'):
 				i += 1
@@ -124,7 +134,7 @@ if __name__ != '__main__':
 			adicionaTabela(tokens, i, tokens[i-1][0])
 			i += 1
 			if(tokens[i][0] == ','): 
-				dec2(tokens, tokens[i-1][0])
+				dec2(tokens, tokens[i-2][0])
 			elif(tokens[i][0] == ';'):  # Declaração simples
 				i += 1
 			elif(tokens[i][0] == '='):  # Declaração com atribuicao
@@ -216,10 +226,51 @@ if __name__ != '__main__':
 
 		if(simb in tabelaDec):
 			print '[Erro] Variavel', simb, 'ja declarada: l ', tabelaDec[simb][1]
+			sys.exit()
 		else:
 			print 'Declaraçao valida!'
 			tabelaDec[simb] = [tipo, tokens[pos][1]]
-			
+
+	def verificaExp(tokens, sentenca):
+		"""
+		Realiza verificaçao de tipo em expressoes artimaticas
+		"""	
+		# Captura o tipo do primeiro token da expressao
+		if(sentenca[0] in tabelaDec):
+			tipo = tabelaDec[sentenca[0]][0]
+		elif(sentenca[0] in reservadas):
+			tipo = sentenca[0]
+		else:
+			sys.stdout.write('\n[Erro] Operaçao com variavel nao declarada --> ' + sentenca[0] + ' l: ')
+			for i in [j for j in tokens]:
+				if(i[0] == sentenca[0]):
+					print i[i]
+			sys.exit()
+		
+		# Verifica se os demais tokens sao do mesmo tipo do primeiro
+		for i in sentenca:				
+			if(i in tabelaDec):
+				if(tabelaDec[i][0] != tipo):
+					print '\n[Erro] Operaçao entre tipos diferentes!'
+					sys.exit()
+			elif(i in reservadas):
+				if(i != tipo):
+					print '\n[Erro] Operaçao entre tipos diferentes!'
+					sys.exit()
+			else:
+				sys.stdout.write('\n[Erro] Operaçao com variavel nao declarada --> ' + i + ' l: ')
+				for j in [k for k in tokens]:
+					if(j[0] == i):
+						print j[1]
+				sys.exit()
+
+		exp = []
+
+	def geraCodigo():
+		pass
+
+
+
 	def programa(tokens):
 		"""
 		Funçao para reconhecimento dos tipos de tokens.
@@ -249,4 +300,4 @@ if __name__ != '__main__':
 			else:
 				i += 1
 		else:
-			print '\nAnalises léxica e sintatica concluidas! Nenhum erro detectado!'
+			print '\nCompilaçao concluida! Nenhum erro detectado!'

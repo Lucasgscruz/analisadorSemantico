@@ -1,2 +1,5 @@
 // comentario
-a = a - b / l;
+int a,b;
+int a = 999;
+float l = 0 + g;
+a = a - 9 / l;
