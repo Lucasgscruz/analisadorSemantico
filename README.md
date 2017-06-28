@@ -22,6 +22,7 @@ Como saída o compilador retorna uma mensagem informando se as análises léxica
 sintática e semântica foram executadas com êxito, ou se houve algum erro durante a
 compilação. Caso algum erro tenha sido detectado, o mesmo é exibido
 na tela do terminal juntamente com sua respectiva localização no código-fote(linha/coluna).
+
 Após a compilação, na pasta raiz é criado um arquvio "executavel" contendo o código Assembly
 que foi gerado a partir do código-fonte.
 
