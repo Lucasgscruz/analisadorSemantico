@@ -4,13 +4,38 @@
 from erros import *
 from dicionario import *
 from erros import *
+import files
 import sys
 import re
+import os
 
 if __name__ != '__main__':
 	i = 0
 	tabelaDec = {}
 	exp = []
+	reg = 0
+
+	def geraCodigo(instrucao, tokens):
+		"""
+		Gera codigo assembly de acordo com a instrucao recebida.
+		"""
+		global reg
+
+		# Instrucao 'Load'
+		if(instrucao == 'Load'):
+			print 'load $S'+str(reg)+','+tokens[i][0]
+			files.writeExe('load $S'+str(reg)+','+tokens[i][0] +'\n')
+			reg += 1
+
+		# Instrucao 'Add'
+		elif(instrucao == 'Add'):
+			print ('Add $S'+str(reg)+','+
+					'$S'+str(reg-1)+','+
+					'$S'+str(reg-2))
+			files.writeExe('Add $S'+str(reg)+','+
+					'$S'+str(reg-1)+','+
+					'$S'+str(reg-2)+'\n')
+			reg += 1
 
 	def E(tokens):
 		T(tokens)
@@ -31,11 +56,13 @@ if __name__ != '__main__':
 		elif(re.match(r'^[a-zA-z0-9_]', tokens[i][0]) or
 		  	re.match(r'^[-0-9.]+$', tokens[i][0])):   # Terminal identificador
 			exp.append(tokens[i][0])
+
+			geraCodigo('Load', tokens)
 			i += 1
-		elif(tokens[i][0] == '('):  # Terminal
+		elif(tokens[i][0] == '('):  # Terminal abre parenteses
 			i += 1
 			E(tokens)
-			if(tokens[i][0] == ')'):  # Terminal
+			if(tokens[i][0] == ')'):  # Terminal fecha parenteses
 				i += 1
 			else:
 				sinErro(tokens[i][1], tokens[i][2], 3)
@@ -44,11 +71,12 @@ if __name__ != '__main__':
 
 	def Elinha(tokens):
 		global i
-		if(tokens[i][0] == '+'):
+		if(tokens[i][0] == '+'): # Terminal operador de adicao
 			i += 1
 			T(tokens)
+			geraCodigo('Add', tokens)
 			Elinha(tokens)
-		elif(tokens[i][0] == '-'):
+		elif(tokens[i][0] == '-'): # Terminal operador de subtracao
 			i += 1
 			T(tokens)
 			Elinha(tokens)
@@ -249,11 +277,9 @@ if __name__ != '__main__':
 					sys.exit()
 		exp = []
 
-	def geraCodigo():
-		pass
-
 	def sinErro(linha, coluna, codigoErro):
 		print '\n' + getErro(codigoErro, linha, coluna)
+		os.system("rm executavel")
 		sys.exit()
 
 	def programa(tokens):
@@ -266,6 +292,7 @@ if __name__ != '__main__':
 		while (i < len(tokens)):
 			if(tokens[i][0] == '$'):
 				i += 1
+
 			# Se o token for uma palavra reservada é uma declaracao
 			elif(tokens[i][0] == 'int' or tokens[i][0] == 'float' or tokens[i][0] == 'char'):
 				declaracao(tokens)
