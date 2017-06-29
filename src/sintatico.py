@@ -3,6 +3,7 @@
 
 from erros import *
 from dicionario import *
+from erros import *
 import sys
 import re
 
@@ -37,11 +38,9 @@ if __name__ != '__main__':
 			if(tokens[i][0] == ')'):  # Terminal
 				i += 1
 			else:
-				print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-				sys.exit()
+				sinErro(tokens[i][1], tokens[i][2], 3)
 		else:
-			print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-			sys.exit()
+			sinErro(tokens[i][1], tokens[i][2], 4)
 
 	def Elinha(tokens):
 		global i
@@ -57,8 +56,7 @@ if __name__ != '__main__':
 			 or tokens[i][0] == '{'):
 			pass
 		else:
-			print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-			sys.exit()
+			sinErro(tokens[i][1], tokens[i][2], 5)
 
 	def Tlinha(tokens):
 		global i
@@ -74,8 +72,7 @@ if __name__ != '__main__':
 			 or tokens[i][0] == ')' or tokens[i][0] == ';' or tokens[i][0] == '{'):
 			pass
 		else:
-			print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-			sys.exit()
+			sinErro(tokens[i][1], tokens[i][2], 5)
 
 	def expressao(tokens):
 		"""
@@ -89,12 +86,12 @@ if __name__ != '__main__':
 		if(expressao(tokens)):  # Se for expressao, numero ou id
 			pass
 		else:
-			print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-			sys.exit()
+			sinErro(tokens[i][1], tokens[i][2], 6)
 
 	def atribuicao(tokens):
 		global i
 		if(re.match(r'^[a-zA-z0-9_]+$', tokens[i][0])):  # <ID>
+			exp.append(tokens[i][0])
 			i += 1
 			if(tokens[i][0] == '='):  # <ATTRIB>
 				i += 1
@@ -103,11 +100,9 @@ if __name__ != '__main__':
 					i += 1
 				else:
 					i -= 1
-					print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-					sys.exit()
+					sinErro(tokens[i][1], tokens[i][2], 7)
 			else:
-				print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-				sys.exit()
+				sinErro(tokens[i][1], tokens[i][2])
 
 	def dec2(tokens, tipo):
 		global i
@@ -121,11 +116,9 @@ if __name__ != '__main__':
 			elif(tokens[i][0] == ','):  # Se for outra virgula
 				dec2(tokens, tipo)
 			else:
-				print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-				sys.exit()
+				sinErro(tokens[i][1], tokens[i][2], 9)
 		else:
-			print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-			sys.exit()
+			sinErro(tokens[i][1], tokens[i][2], 9)
 
 	def declaracao(tokens):
 		global i
@@ -141,11 +134,9 @@ if __name__ != '__main__':
 				i -= 1
 				atribuicao(tokens)
 			else:
-				print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-				sys.exit()
+ 				sinErro(tokens[i][1], tokens[i][2], 9)
 		else:
-			print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-			sys.exit()
+			sinErro(tokens[i][1], tokens[i][2], 9)
 
 	def bloco(tokens):
 		global i
@@ -176,14 +167,11 @@ if __name__ != '__main__':
 				if(tokens[i][0] == '}'):
 					i += 1
 				else:
-					print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-					sys.exit()
+					sinErro(tokens[i][1], tokens[i][2], 11)
 			else:
-				print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-				sys.exit()
+				sinErro(tokens[i][1], tokens[i][2], 10)
 		else:
-			print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-			sys.exit()
+			sinErro(tokens[i][1], tokens[i][2], 6)
 
 	def condicao(tokens):
 		global i
@@ -195,8 +183,7 @@ if __name__ != '__main__':
 				if(tokens[i][0] == '}'):
 					i += 1
 				else:
-					print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-					sys.exit()
+					sinErro(tokens[i][1], tokens[i][2], 11)
 				if(tokens[i][0] == 'else'):
 					i += 1
 					if(tokens[i][0] == '{'):
@@ -205,18 +192,13 @@ if __name__ != '__main__':
 						if(tokens[i][0] == '}'):
 							i += 1
 						else:
-							print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-							sys.exit()
+							sinErro(tokens[i][1], tokens[i][2], 11)
 					else:
-						print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-						sys.exit()
+						sinErro(tokens[i][1], tokens[i][2], 10)
 			else:
-				print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ', tokens[i][2]
-				sys.exit()
+				sinErro(tokens[i][1], tokens[i][2], 10)
 		else:
-			print '[Erro] Erro sintatico: linha ', tokens[i][1], 'coluna ',
-			tokens[i][2], ' - Expressao invalida!'
-			sys.exit()
+			sinErro(tokens[i][1], tokens[i][2], 6)
 
 	def adicionaTabela(tokens, pos, tipo):
 		"""
@@ -225,7 +207,7 @@ if __name__ != '__main__':
 		simb = tokens[pos][0]
 
 		if(simb in tabelaDec):
-			print '[Erro] Variavel', simb, 'ja declarada: l ', tabelaDec[simb][1]
+			print '[Erro] Variavel -', simb, '- ja declarada: l ', tabelaDec[simb][1]
 			sys.exit()
 		else:
 			print 'Declaraçao valida!'
@@ -233,19 +215,27 @@ if __name__ != '__main__':
 
 	def verificaExp(tokens, sentenca):
 		"""
-		Realiza verificaçao de tipo em expressoes artimaticas
-		"""	
+		Realiza verificaçao de tipo em expressoes artimaticas.
+		"""
+		
+		# Verifica se todos as variaveis da expressao foram declaradas
+		for i in sentenca:
+			if(i in tabelaDec):
+				pass
+			elif(i in reservadas):
+				pass
+			else:
+				sys.stdout.write('\n[Erro] Operaçao com variavel nao declarada --> ' + i + ' l: ')
+				for j in tokens:
+					if(j[0] == i):
+						print j[1]
+				sys.exit()
+
 		# Captura o tipo do primeiro token da expressao
 		if(sentenca[0] in tabelaDec):
 			tipo = tabelaDec[sentenca[0]][0]
 		elif(sentenca[0] in reservadas):
 			tipo = sentenca[0]
-		else:
-			sys.stdout.write('\n[Erro] Operaçao com variavel nao declarada --> ' + sentenca[0] + ' l: ')
-			for i in [j for j in tokens]:
-				if(i[0] == sentenca[0]):
-					print i[i]
-			sys.exit()
 		
 		# Verifica se os demais tokens sao do mesmo tipo do primeiro
 		for i in sentenca:				
@@ -257,19 +247,14 @@ if __name__ != '__main__':
 				if(i != tipo):
 					print '\n[Erro] Operaçao entre tipos diferentes!'
 					sys.exit()
-			else:
-				sys.stdout.write('\n[Erro] Operaçao com variavel nao declarada --> ' + i + ' l: ')
-				for j in [k for k in tokens]:
-					if(j[0] == i):
-						print j[1]
-				sys.exit()
-
 		exp = []
 
 	def geraCodigo():
 		pass
 
-
+	def sinErro(linha, coluna, codigoErro):
+		print '\n' + getErro(codigoErro, linha, coluna)
+		sys.exit()
 
 	def programa(tokens):
 		"""

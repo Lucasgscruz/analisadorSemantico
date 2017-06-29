@@ -118,7 +118,7 @@ if __name__ != '__main__':
                 (tokens[tokens.index(lexema) + 1][0] in aritmeticos)) and
                 ((tokens[tokens.index(lexema) + 2][0] in logicos) or
                  (tokens[tokens.index(lexema) + 2][0] in aritmeticos))):
-                setListaErros(getErro(02, lexema[1], lexema[2]))
+                setListaErros(getErro(2, lexema[1], lexema[2]))
                 erro = 1
 
         for i in (getListaErros()):

@@ -12,11 +12,11 @@ def main():
     try:
         sys.argv[1]
     except Exception:
-        print erros.getErro(00, None, None)
+        print erros.getErro(0, None, None)
         return None
 
     if(checarExtensao(sys.argv[1]) != 1):
-        print erros.getErro(01, None, None)
+        print erros.getErro(1, None, None)
         return None
 
     source = readSource(sys.argv[1])    # Ler código fonte
