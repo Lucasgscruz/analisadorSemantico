@@ -1,4 +1,4 @@
 compilar:
-	python ./src/compilador.py ./entrada/lucas.c
+	python ./src/compilador.py ./entrada/helloWorld.c
 limpar:
 	rm ./src/*.pyc tabela.txt

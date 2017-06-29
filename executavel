@@ -1,11 +1,20 @@
-load $S0,c
+load $S0,a
 load $S1,b
-load $S2,d
-Mul $S3,$S2,$S1
-Add $S4,$S3,$S2
-load $S5,c
-Add $S6,$S5,$S4
-load $S7,f
-load $S8,a
-Mul $S9,$S8,$S7
-Add $S10,$S9,$S8
+Mul $S2,$S1,$S0
+Add $S3,$S2,$S1
+load $S4,a
+Add $S5,$S4,$S3
+load $S6,c
+Mul $S7,$S6,$S5
+Add $S8,$S7,$S6
+load $S9,a
+load $S10,b
+Add $S11,$S10,$S9
+Beq $12, $S11, LABEL
+load $S13,a
+load $S14,n
+Add $S15,$S14,$S13
+
+LABEL:
+Add $S17,$S16,$S15
+Beq $18, $S17, LABEL

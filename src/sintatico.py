@@ -20,24 +20,34 @@ if __name__ != '__main__':
 		Gera codigo assembly de acordo com a instrucao recebida.
 		"""
 		global reg
-
+	
 		# Instrucao 'Load'
 		if(instrucao == 'Load'):
-			print 'load $S'+str(reg)+','+tokens[i][0]
+			# print 'load $S'+str(reg)+','+tokens[i][0]
 			files.writeExe('load $S'+str(reg)+','+tokens[i][0] +'\n')
-			reg += 1
 
 		# Instrucoes 'Add', 'Mul', 'Sub' e 'Div'
 		elif(instrucao == 'Add' or instrucao == 'Mul' or
 			instrucao == 'Sub' or instrucao == 'Div'):
 			
-			print (instrucao+' $S'+str(reg)+','+
-					'$S'+str(reg-1)+','+
-					'$S'+str(reg-2))
+			# print (instrucao+' $S'+str(reg)+','+
+			# 		'$S'+str(reg-1)+','+
+			# 		'$S'+str(reg-2))
 			files.writeExe(instrucao+' $S'+str(reg)+','+
 					'$S'+str(reg-1)+','+
 					'$S'+str(reg-2)+'\n')
-			reg += 1
+
+		# Instrucao beq
+		elif(instrucao == 'Beq'):
+			# print 'Beq $'+str(reg)+', $S'+str(reg-1)+', LABEL'
+			files.writeExe('Beq $'+str(reg)+', $S'+str(reg-1)+', LABEL\n')
+
+		# Labels
+		elif(instrucao == 'Label'):
+			# print '\nLABEL:'
+			files.writeExe('\nLABEL:\n')
+		
+		reg += 1
 
 	def E(tokens):
 		T(tokens)
@@ -193,6 +203,7 @@ if __name__ != '__main__':
 			# Se o token for um identificador é uma atribuição
 			elif(re.match(r'^[a-zA-z0-9_]+$', tokens[i][0])):
 				atribuicao(tokens)
+			
 
 	def repeticao(tokens):
 		global i
@@ -212,8 +223,12 @@ if __name__ != '__main__':
 
 	def condicao(tokens):
 		global i
+		global reg
+
 		i += 1
 		if(expressao(tokens)):
+			geraCodigo('Beq',tokens)
+			
 			if(tokens[i][0] == '{'):
 				i += 1
 				bloco(tokens)
@@ -222,6 +237,8 @@ if __name__ != '__main__':
 				else:
 					sinErro(tokens[i][1], tokens[i][2], 11)
 				if(tokens[i][0] == 'else'):
+					geraCodigo('Label', tokens)
+
 					i += 1
 					if(tokens[i][0] == '{'):
 						i += 1
