@@ -27,12 +27,14 @@ if __name__ != '__main__':
 			files.writeExe('load $S'+str(reg)+','+tokens[i][0] +'\n')
 			reg += 1
 
-		# Instrucao 'Add'
-		elif(instrucao == 'Add'):
-			print ('Add $S'+str(reg)+','+
+		# Instrucoes 'Add', 'Mul', 'Sub' e 'Div'
+		elif(instrucao == 'Add' or instrucao == 'Mul' or
+			instrucao == 'Sub' or instrucao == 'Div'):
+			
+			print (instrucao+' $S'+str(reg)+','+
 					'$S'+str(reg-1)+','+
 					'$S'+str(reg-2))
-			files.writeExe('Add $S'+str(reg)+','+
+			files.writeExe(instrucao+' $S'+str(reg)+','+
 					'$S'+str(reg-1)+','+
 					'$S'+str(reg-2)+'\n')
 			reg += 1
@@ -76,10 +78,13 @@ if __name__ != '__main__':
 			T(tokens)
 			geraCodigo('Add', tokens)
 			Elinha(tokens)
+
 		elif(tokens[i][0] == '-'): # Terminal operador de subtracao
 			i += 1
 			T(tokens)
+			geraCodigo('Sub', tokens)
 			Elinha(tokens)
+		
 		elif(tokens[i][0] == '$' or tokens[i][0] == ')' or tokens[i][0] == ';'
 			 or tokens[i][0] == '{'):
 			pass
@@ -91,11 +96,15 @@ if __name__ != '__main__':
 		if(tokens[i][0] == '*'):
 			i += 1
 			F(tokens)
+			geraCodigo('Mul', tokens)
 			Tlinha(tokens)
+
 		elif(tokens[i][0] == '/'):
 			i += 1
 			F(tokens)
+			geraCodigo('Div', tokens)
 			Tlinha(tokens)
+	
 		elif(tokens[i][0] == '$' or tokens[i][0] == '+' or tokens[i][0] == '-'
 			 or tokens[i][0] == ')' or tokens[i][0] == ';' or tokens[i][0] == '{'):
 			pass

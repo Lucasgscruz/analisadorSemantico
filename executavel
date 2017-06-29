@@ -1,0 +1,11 @@
+load $S0,c
+load $S1,b
+load $S2,d
+Mul $S3,$S2,$S1
+Add $S4,$S3,$S2
+load $S5,c
+Add $S6,$S5,$S4
+load $S7,f
+load $S8,a
+Mul $S9,$S8,$S7
+Add $S10,$S9,$S8
